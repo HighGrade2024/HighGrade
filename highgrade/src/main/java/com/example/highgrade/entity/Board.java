@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Board {
+public class Board extends BaseTime{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
