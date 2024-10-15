@@ -26,3 +26,8 @@ logging:
         type:
           descriptor:
             sql: trace
+
+jwt:
+  header: Authorization
+  secret : 73d92a19382d9482b51473abc5e74713767969462b8e2d1bc8b36a4a065ba8cd
+  token-validity-in-seconds : 86400
