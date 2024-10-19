@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class BoardImage {
 
     @Id
-    private Long imageId;
+    private String imageId;
 
     @Column(nullable = false)
     private String imageUrl;
