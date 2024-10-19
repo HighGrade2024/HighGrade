@@ -18,7 +18,7 @@ public class Board extends BaseTime{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long board_id;
+    private Long boardId;
 
     @Column(nullable = false)
     private String title;
