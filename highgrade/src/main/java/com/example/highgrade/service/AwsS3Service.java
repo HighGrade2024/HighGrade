@@ -1,6 +1,7 @@
 package com.example.highgrade.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +26,11 @@ public class AwsS3Service {
 
     private final AmazonS3 s3Client;
 
+    /**
+     * S3 이미지 업로드 ( 리스트 )
+     * @param multipartFiles
+     * @return
+     */
     public List<String> upload(List<MultipartFile> multipartFiles) {
 
         List<String> fileNames = new ArrayList<>();
@@ -48,6 +54,13 @@ public class AwsS3Service {
         return fileNames;
     }
 
+    /**
+     * Image 삭제
+     * @param fileName
+     */
+    public void deleteImage(String fileName) {
+        s3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
+    }
     public String createFilName(String fileName){
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
     }
