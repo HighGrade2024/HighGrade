@@ -1,8 +1,7 @@
 package com.example.highgrade.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,9 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,30 +25,35 @@ public class AwsS3Service {
 
     /**
      * S3 이미지 업로드 ( 리스트 )
-     * @param multipartFiles
+     * @param multipartFile
      * @return
      */
-    public List<String> upload(List<MultipartFile> multipartFiles) {
+    public String upload(MultipartFile multipartFile) {
 
-        List<String> fileNames = new ArrayList<>();
+        String fileName = createFilName(multipartFile.getOriginalFilename());
 
-        multipartFiles.forEach(multipartFile -> {
-            String fileName = createFilName(multipartFile.getOriginalFilename());
+        // 이미지 전처리 단계 (콘텐츠 타입, 사이즈 설정)
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(multipartFile.getContentType());
+        objectMetadata.setContentLength(multipartFile.getSize());
 
-            // 이미지 전처리 단계 (콘텐츠 타입, 사이즈 설정)
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentType(multipartFile.getContentType());
-            objectMetadata.setContentLength(multipartFile.getSize());
+        try(InputStream inputStream = multipartFile.getInputStream()) {
+            //이미지 S3에 업로드 시 ACL 권한을 PublicRead로 설정하여 모든 사용자에게 읽기 권한을 부여
+            s3Client.putObject(
+                    new PutObjectRequest(
+                            bucket,
+                            fileName,
+                            inputStream,
+                            objectMetadata
+                    ).withCannedAcl(CannedAccessControlList.PublicRead)
+            );
 
-            try(InputStream inputStream = multipartFile.getInputStream()) {
-                s3Client.putObject(bucket, fileName, inputStream, objectMetadata);
-                fileNames.add(fileName);
-            } catch (IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패하였습니다.");
-            }
-        });
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패하였습니다.");
+        }
 
-        return fileNames;
+
+        return s3Client.getUrl(bucket, fileName).toString();
     }
 
     /**
