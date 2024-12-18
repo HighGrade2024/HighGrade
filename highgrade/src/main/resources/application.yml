@@ -2,11 +2,14 @@ spring :
   application:
     name : highgrade
 
+  config:
+    import: classpath:secret.yml
+
   datasource:
-    url : jdbc:postgresql://localhost:5432/postgres
+    url : ENC(INrPuhGyCfy+ERR4xXal4PzuRt+3a7GsTQWinsNvMGuw4lgQ+c1LeZIbQCsbwbZ+EHk8UgQd7n0=)
     driver-class-name: org.postgresql.Driver
-    username: byeongdoohan
-    password: p@ssw0rd
+    username: ENC(DL7PVpAIFPCgvfL1GLNmR+oQPChZ7ktq)
+    password: ENC(GvlMQ2FDsbE67r99KX3jM4T3k1wmeBji)
 
   jpa:
     hibernate:
@@ -27,7 +30,6 @@ logging:
           descriptor:
             sql: trace
 
-jwt:
-  header: Authorization
-  secret : 73d92a19382d9482b51473abc5e74713767969462b8e2d1bc8b36a4a065ba8cd
-  token-validity-in-seconds : 86400
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
