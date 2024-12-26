@@ -14,11 +14,10 @@ import lombok.NoArgsConstructor;
 public class BoardImage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long image_id;
+    private String imageId;
 
     @Column(nullable = false)
-    private String image_url;
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
