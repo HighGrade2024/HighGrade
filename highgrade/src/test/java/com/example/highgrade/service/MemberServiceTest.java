@@ -32,7 +32,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("멤버 저장 테스트")
     void saveMemberTest(){
-        Members member = Members.builder().name("test").build();
+        Members member = Members.builder().email("test").build();
         memberService.saveMember(member);
 
         when(memberService.findMember(1L))
