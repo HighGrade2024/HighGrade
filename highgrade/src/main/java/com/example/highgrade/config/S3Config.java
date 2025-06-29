@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Configuration
-public class S3Config {
+public class AwsS3Config {
 
     @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;
