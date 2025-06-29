@@ -28,6 +28,9 @@ public class Members {
     private String email;
     private String password;
     private String oauthid;
+    @NotNull
+    private String email;
+    private String password;
     private String profileImageUrl;
     private LocalDateTime registeredAt;
     private LocalDateTime unregisteredAt;
@@ -37,8 +40,14 @@ public class Members {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Members(String name) {
+    public Members(String name,
+                   String email,
+                   String phoneNumber,
+                   String password) {
         this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
 }
