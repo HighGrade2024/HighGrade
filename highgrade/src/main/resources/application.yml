@@ -18,7 +18,6 @@ spring :
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
         use_sql_comments: true
-
 logging:
   level:
     org:
@@ -26,3 +25,9 @@ logging:
         type:
           descriptor:
             sql: trace
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+
