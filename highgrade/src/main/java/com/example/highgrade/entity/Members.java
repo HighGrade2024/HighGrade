@@ -1,5 +1,6 @@
 package com.example.highgrade.entity;
 
+import com.example.highgrade.dto.RegisterMemberDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class Members {
     private String oauthid;
     @NotNull
     private String email;
+    @NotNull
     private String password;
     private String profileImageUrl;
     private LocalDateTime registeredAt;
@@ -50,4 +52,12 @@ public class Members {
         this.password = password;
     }
 
+    public RegisterMemberDto toDto() {
+        return RegisterMemberDto.builder()
+            .email(email)
+            .password(password)
+            .name(name)
+            .phoneNumber(phoneNumber)
+            .build();
+    }
 }
