@@ -2,14 +2,11 @@ spring :
   application:
     name : highgrade
 
-  config:
-    import: classpath:secret.yml
-
   datasource:
-    url : ENC(INrPuhGyCfy+ERR4xXal4PzuRt+3a7GsTQWinsNvMGuw4lgQ+c1LeZIbQCsbwbZ+EHk8UgQd7n0=)
+    url : ${DB_URL}
     driver-class-name: org.postgresql.Driver
-    username: ENC(DL7PVpAIFPCgvfL1GLNmR+oQPChZ7ktq)
-    password: ENC(GvlMQ2FDsbE67r99KX3jM4T3k1wmeBji)
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -29,6 +26,17 @@ logging:
         type:
           descriptor:
             sql: trace
+jwt:
+  secret: ${JWT_SECRET}
+  token-validity-in-seconds: 3600
+
+cloud:
+  aws:
+    s3:
+      bucket: spring-profile-image-bucket
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
 
 jasypt:
   encryptor:

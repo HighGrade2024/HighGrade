@@ -27,9 +27,9 @@ public class TokenProvider implements InitializingBean {
     private final Logger logger = LoggerFactory.getLogger(String.valueOf(TokenProvider.class));
     private static final String AUTHORITIES_KEY = "auth";
     @Value("${jwt.secret}")
-    private final String secret;
+    private String secret;
     @Value("${jwt.token-validity-in-seconds}")
-    private final long tokenValiditySeconds;
+    private long tokenValiditySeconds;
     private Key key;
 
 
