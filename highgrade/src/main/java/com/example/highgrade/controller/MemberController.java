@@ -23,9 +23,9 @@ public class MemberController {
     }
 
     @PostMapping(value = "/auth/signin")
-    public ResponseEntity<Members> signinMember(@RequestBody SignInMemberDto dto){
-        memberService.signinMember(dto);
-        Members signinMember = dto.toEntity();
-        return ResponseEntity.ok(signinMember);
+    public ResponseEntity<Members> signInMember(@RequestBody SignInMemberDto dto){
+        memberService.signInMember(dto);
+        Members signInMember = dto.toEntity();
+        return ResponseEntity.ok(signInMember);
     }
 }
