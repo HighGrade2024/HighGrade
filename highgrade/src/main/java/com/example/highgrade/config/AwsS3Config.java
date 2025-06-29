@@ -23,8 +23,8 @@ public class AwsS3Config {
         BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         String region = Regions.AP_NORTHEAST_2.getName();
         return AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(region)
-                .build();
+            .withCredentials(new AWSStaticCredentialsProvider(credentials))
+            .withRegion(region)
+            .build();
     }
 }
