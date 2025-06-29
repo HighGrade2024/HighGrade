@@ -25,6 +25,8 @@ public class Members {
     @NotNull
     private String name;
     private String phoneNumber;
+    private String email;
+    private String password;
     private String oauthid;
     @NotNull
     private String email;
@@ -32,8 +34,6 @@ public class Members {
     private String profileImageUrl;
     private LocalDateTime registeredAt;
     private LocalDateTime unregisteredAt;
-    @ElementCollection
-    private List<Skills> skillsList;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
