@@ -1,5 +1,6 @@
 package com.example.highgrade.service;
 
+import com.example.highgrade.entity.MemberDetail;
 import com.example.highgrade.entity.Members;
 import com.example.highgrade.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,11 @@ public class MemberDetailsImpl implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Members members = memberRepository.findByEmail(email).orElseThrow(
+            () -> new UsernameNotFoundException("회원 없음")
+        );
+        return new MemberDetail(members);
 
     }
 }
