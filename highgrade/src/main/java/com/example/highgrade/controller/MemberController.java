@@ -9,10 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 public class MemberController {
 
     private final MemberService memberService;
@@ -23,12 +25,12 @@ public class MemberController {
         return ResponseEntity.ok(savedMember);
     }
 
-    @PostMapping(value = "/auth/signIn")
-    public ResponseEntity<?> signInMember(@RequestBody SignInMemberDto dto){
-        return ResponseEntity.ok(memberService.signInMember(dto));
+    @PostMapping(value = "/auth/login")
+    public ResponseEntity<?> loginMember(@RequestBody SignInMemberDto dto){
+        return ResponseEntity.ok(memberService.loginMember(dto));
     }
 
-    @PostMapping(value = "/auth/signUp")
+    @PostMapping(value = "/auth/signup")
     public ResponseEntity<Members> signUpMember(@RequestBody SignUpMemberDto dto){
         memberService.signUpMember(dto);
         Members signUpMember = dto.toEntity();
