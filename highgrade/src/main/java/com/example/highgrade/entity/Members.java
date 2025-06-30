@@ -26,8 +26,6 @@ public class Members {
     @NotNull
     private String name;
     private String phoneNumber;
-    private String email;
-    private String password;
     private String oauthid;
     @NotNull
     private String email;
