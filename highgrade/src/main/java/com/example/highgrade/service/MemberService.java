@@ -39,7 +39,7 @@ public class MemberService {
     }
 
     @Transactional
-    public String signInMember(SignInMemberDto dto){
+    public String loginMember(SignInMemberDto dto){
         Members foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
             NoSuchElementException::new
         );
@@ -49,9 +49,7 @@ public class MemberService {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
             foundMember.getEmail(), null, List.of()
         );
-        String token = tokenProvider.createToken(authentication);
-        System.out.println(token);
-        return token;
+        return tokenProvider.createToken(authentication);
     }
 
     @Transactional

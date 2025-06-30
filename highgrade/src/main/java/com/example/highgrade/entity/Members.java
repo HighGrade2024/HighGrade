@@ -29,6 +29,8 @@ public class Members {
     private String oauthid;
     @NotNull
     private String email;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     @NotNull
     private String password;
     private String profileImageUrl;
@@ -46,6 +48,7 @@ public class Members {
                    String password) {
         this.name = name;
         this.email = email;
+        this.role = Role.MEMBER;
         this.phoneNumber = phoneNumber;
         this.password = password;
     }
