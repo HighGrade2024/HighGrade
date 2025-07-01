@@ -69,9 +69,4 @@ public class MemberService {
 
         }
     }
-
-    @Transactional
-    public void logoutMember(String token){
-        tokenService.logout(token);
-    }
 }

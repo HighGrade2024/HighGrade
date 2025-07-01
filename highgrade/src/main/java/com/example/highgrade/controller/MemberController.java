@@ -7,6 +7,7 @@ import com.example.highgrade.entity.MemberDetail;
 import com.example.highgrade.entity.Members;
 import com.example.highgrade.config.security.JwtFilter;
 import com.example.highgrade.service.MemberService;
+import com.example.highgrade.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
-    private final JwtFilter jwtFilter;
+    private final TokenService tokenService;
 
     @PostMapping(value = "/member")
     public ResponseEntity<Members> saveMember(@RequestBody RegisterMemberDto dto){
@@ -44,13 +45,6 @@ public class MemberController {
 
     @PostMapping(value = "/auth/logout")
     public ResponseEntity<Void> logoutMember(HttpServletRequest request){
-
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().build();
-        }
-        String token = authHeader.substring(7);
-        memberService.logoutMember(token);
-        return ResponseEntity.ok().build();
+        return tokenService.logout(request);
     }
 }
