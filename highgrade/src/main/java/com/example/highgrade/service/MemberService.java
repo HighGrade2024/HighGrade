@@ -3,14 +3,14 @@ package com.example.highgrade.service;
 import com.example.highgrade.dto.RegisterMemberDto;
 import com.example.highgrade.dto.SignInMemberDto;
 import com.example.highgrade.dto.SignUpMemberDto;
+import com.example.highgrade.entity.MemberDetail;
 import com.example.highgrade.entity.Members;
 import com.example.highgrade.repository.MemberRepository;
-import com.example.highgrade.security.TokenProvider;
+import com.example.highgrade.config.security.TokenProvider;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.Token;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +25,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final TokenService tokenService;
     @Transactional
     public Members saveMember(RegisterMemberDto dto){
         Members member = dto.toEntity();
@@ -46,10 +47,8 @@ public class MemberService {
         if(!passwordEncoder.matches(dto.getPassword(), foundMember.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-            foundMember.getEmail(), null, List.of()
-        );
-        return tokenProvider.createToken(authentication);
+
+        return tokenService.login(foundMember);
     }
 
     @Transactional
@@ -69,5 +68,10 @@ public class MemberService {
             memberRepository.save(newMemeber);
 
         }
+    }
+
+    @Transactional
+    public void logoutMember(String token){
+        tokenService.logout(token);
     }
 }

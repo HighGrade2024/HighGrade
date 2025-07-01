@@ -1,4 +1,4 @@
-package com.example.highgrade.security;
+package com.example.highgrade.config.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
