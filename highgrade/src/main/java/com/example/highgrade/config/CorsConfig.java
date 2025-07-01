@@ -1,4 +1,4 @@
-package com.example.highgrade.security.config;
+package com.example.highgrade.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

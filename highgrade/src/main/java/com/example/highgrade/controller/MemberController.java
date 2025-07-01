@@ -3,10 +3,14 @@ package com.example.highgrade.controller;
 import com.example.highgrade.dto.RegisterMemberDto;
 import com.example.highgrade.dto.SignInMemberDto;
 import com.example.highgrade.dto.SignUpMemberDto;
+import com.example.highgrade.entity.MemberDetail;
 import com.example.highgrade.entity.Members;
+import com.example.highgrade.config.security.JwtFilter;
 import com.example.highgrade.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+    private final JwtFilter jwtFilter;
 
     @PostMapping(value = "/member")
     public ResponseEntity<Members> saveMember(@RequestBody RegisterMemberDto dto){
@@ -35,5 +40,17 @@ public class MemberController {
         memberService.signUpMember(dto);
         Members signUpMember = dto.toEntity();
         return ResponseEntity.ok(signUpMember);
+    }
+
+    @PostMapping(value = "/auth/logout")
+    public ResponseEntity<Void> logoutMember(HttpServletRequest request){
+
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest().build();
+        }
+        String token = authHeader.substring(7);
+        memberService.logoutMember(token);
+        return ResponseEntity.ok().build();
     }
 }
