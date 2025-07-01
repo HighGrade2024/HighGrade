@@ -31,7 +31,6 @@ public class JwtFilter extends GenericFilterBean {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String jwt = resolveToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
-
         if (StringUtils.hasText(jwt)) {
             RBucket<String> bucket = redissonClient.getBucket(jwt);
             String value = bucket.get();
