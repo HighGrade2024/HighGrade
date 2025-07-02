@@ -3,17 +3,21 @@ package com.example.highgrade.service;
 import com.example.highgrade.dto.RegisterMemberDto;
 import com.example.highgrade.dto.SignInMemberDto;
 import com.example.highgrade.dto.SignUpMemberDto;
+import com.example.highgrade.dto.TokenResponseDto;
 import com.example.highgrade.entity.MemberDetail;
 import com.example.highgrade.entity.Members;
 import com.example.highgrade.repository.MemberRepository;
 import com.example.highgrade.config.security.TokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -40,7 +44,7 @@ public class MemberService {
     }
 
     @Transactional
-    public String loginMember(SignInMemberDto dto){
+    public ResponseEntity<TokenResponseDto> loginMember(SignInMemberDto dto){
         Members foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
             NoSuchElementException::new
         );
@@ -66,7 +70,6 @@ public class MemberService {
                 .phoneNumber(dto.getPhoneNumber())
                 .build();
             memberRepository.save(newMemeber);
-
         }
     }
 }
