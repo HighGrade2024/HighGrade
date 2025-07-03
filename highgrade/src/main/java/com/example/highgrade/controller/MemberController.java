@@ -1,21 +1,18 @@
 package com.example.highgrade.controller;
 
-import com.example.highgrade.dto.RegisterMemberDto;
-import com.example.highgrade.dto.SignInMemberDto;
-import com.example.highgrade.dto.SignUpMemberDto;
+import com.example.highgrade.dto.*;
 import com.example.highgrade.entity.MemberDetail;
 import com.example.highgrade.entity.Members;
 import com.example.highgrade.config.security.JwtFilter;
 import com.example.highgrade.service.MemberService;
 import com.example.highgrade.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,8 +29,8 @@ public class MemberController {
     }
 
     @PostMapping(value = "/auth/login")
-    public ResponseEntity<?> loginMember(@RequestBody SignInMemberDto dto){
-        return ResponseEntity.ok(memberService.loginMember(dto));
+    public ResponseEntity<TokenResponseDto> loginMember(@RequestBody SignInMemberDto dto){
+        return memberService.loginMember(dto);
     }
 
     @PostMapping(value = "/auth/signup")
@@ -46,5 +43,11 @@ public class MemberController {
     @PostMapping(value = "/auth/logout")
     public ResponseEntity<Void> logoutMember(HttpServletRequest request){
         return tokenService.logout(request);
+    }
+
+    @PostMapping("/auth/refresh")
+    public ResponseEntity<TokenResponseDto> refresh(
+        @CookieValue(value = "refreshToken", required = false) String refreshToken){
+        return tokenService.refresh(refreshToken);
     }
 }
