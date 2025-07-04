@@ -1,6 +1,6 @@
 package com.example.highgrade.dto;
 
-import com.example.highgrade.entity.Members;
+import com.example.highgrade.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +24,8 @@ public class RegisterMemberDto {
         this.phoneNumber = phoneNumber;
     }
 
-    public Members toEntity() {
-        return Members.builder()
+    public Member toEntity() {
+        return Member.builder()
             .email(email)
             .password(password)
             .name(name)

@@ -1,7 +1,7 @@
 package com.example.highgrade.service;
 
 import com.example.highgrade.entity.MemberDetail;
-import com.example.highgrade.entity.Members;
+import com.example.highgrade.entity.Member;
 import com.example.highgrade.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +17,7 @@ public class MemberDetailsImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Members members = memberRepository.findByEmail(email).orElseThrow(
+        Member members = memberRepository.findByEmail(email).orElseThrow(
             () -> new UsernameNotFoundException("회원 없음")
         );
         return new MemberDetail(members);
