@@ -9,17 +9,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Members {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,10 +40,10 @@ public class Members {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Members(String name,
-                   String email,
-                   String phoneNumber,
-                   String password) {
+    public Member(String name,
+                  String email,
+                  String phoneNumber,
+                  String password) {
         this.name = name;
         this.email = email;
         this.role = Role.MEMBER;

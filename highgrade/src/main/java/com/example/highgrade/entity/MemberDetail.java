@@ -17,7 +17,7 @@ public class MemberDetail implements UserDetails, Serializable {
 
     @Serial
     private static final long serialVersionUID = -8833032179672425737L;
-    private final Members members;
+    private final Member members;
     private Collection<GrantedAuthority> authorities;
 
     @Override

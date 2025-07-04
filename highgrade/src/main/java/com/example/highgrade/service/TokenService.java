@@ -2,7 +2,7 @@ package com.example.highgrade.service;
 
 import com.example.highgrade.config.security.TokenProvider;
 import com.example.highgrade.dto.TokenResponseDto;
-import com.example.highgrade.entity.Members;
+import com.example.highgrade.entity.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RBucket;
@@ -35,7 +35,7 @@ public class TokenService {
     private final static String AUTH_HEADER = "Authorization";
 
     @Transactional
-    public ResponseEntity<TokenResponseDto> login(final Members foundMember) {
+    public ResponseEntity<TokenResponseDto> login(final Member foundMember) {
         String email = foundMember.getEmail();
         String role = foundMember.getRole().name();
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

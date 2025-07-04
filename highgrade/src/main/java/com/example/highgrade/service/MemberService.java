@@ -4,22 +4,16 @@ import com.example.highgrade.dto.RegisterMemberDto;
 import com.example.highgrade.dto.SignInMemberDto;
 import com.example.highgrade.dto.SignUpMemberDto;
 import com.example.highgrade.dto.TokenResponseDto;
-import com.example.highgrade.entity.MemberDetail;
-import com.example.highgrade.entity.Members;
+import com.example.highgrade.entity.Member;
 import com.example.highgrade.repository.MemberRepository;
 import com.example.highgrade.config.security.TokenProvider;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -31,13 +25,13 @@ public class MemberService {
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
     @Transactional
-    public Members saveMember(RegisterMemberDto dto){
-        Members member = dto.toEntity();
+    public Member saveMember(RegisterMemberDto dto){
+        Member member = dto.toEntity();
         return memberRepository.save(member);
     }
 
     @Transactional
-    public Members findMember(Long id){
+    public Member findMember(Long id){
         return memberRepository.findById(id).orElseThrow(
             NoSuchElementException::new
         );
@@ -45,7 +39,7 @@ public class MemberService {
 
     @Transactional
     public ResponseEntity<TokenResponseDto> loginMember(SignInMemberDto dto){
-        Members foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
+        Member foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
             NoSuchElementException::new
         );
         if(!passwordEncoder.matches(dto.getPassword(), foundMember.getPassword())){
@@ -59,11 +53,11 @@ public class MemberService {
     public void signUpMember(SignUpMemberDto dto){
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
         try{
-            Members foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
+            Member foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
                 NoSuchElementException::new
             );
         } catch (NoSuchElementException e){
-            Members newMemeber = Members.builder()
+            Member newMemeber = Member.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
                 .password(encodedPassword)
