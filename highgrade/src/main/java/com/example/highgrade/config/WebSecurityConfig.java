@@ -48,8 +48,12 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                     authorizeRequests
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/member/**", "/api/v1/member/**").hasRole(Role.MEMBER.name)
-                        .requestMatchers("/admin/**", "/api/v1/admin/**").hasRole(Role.ADMIN.name)
+                        .requestMatchers(
+                            "/api/v1/member/**", "/api/v1/auth/logout"
+                        ).hasRole(Role.MEMBER.name)
+                        .requestMatchers(
+                            "/api/v1/admin/**", "/api/v1/auth/logout"
+                        ).hasRole(Role.ADMIN.name)
                         .anyRequest().authenticated())
                 .exceptionHandling((exceptionConfig) ->
                     exceptionConfig.authenticationEntryPoint(jwtAuthenticationEntryPoint)
