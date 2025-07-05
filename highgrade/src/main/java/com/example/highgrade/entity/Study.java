@@ -29,10 +29,10 @@ public class Study {
 
     @Builder
     public Study(Long id, String studyName,
-                 String studyDate,
+                 LocalDateTime studyDate,
                  String location){
         this.id = id;
-        this.studyDate = LocalDateTime.parse(studyDate);
+        this.studyDate =studyDate;
         this.studyName = studyName;
         this.location = location;
     }

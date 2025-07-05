@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @Getter
 public class StudyRequestDto {
     private String studyName;
-    private String studyDate;
+    private LocalDateTime studyDate;
     private String location;
 
     @Builder
     public StudyRequestDto(String studyName,
-                           String studyDate,
+                           LocalDateTime studyDate,
                            String location){
         this.studyDate = studyDate;
         this.studyName = studyName;

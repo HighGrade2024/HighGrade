@@ -27,7 +27,7 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final MemberRepository memberRepository;
 
-
+    @Transactional
     public ResponseEntity<Study> createStudy(StudyRequestDto dto) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Member member = memberRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
@@ -38,7 +38,6 @@ public class StudyService {
             .location(dto.getLocation())
             .build();
         Study savedStudy= studyRepository.save(newStudy);
-        LOGGER.info(savedStudy+ "가 생성되었음");
         return ResponseEntity.ok().body(savedStudy);
     }
 
