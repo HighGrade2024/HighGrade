@@ -1,7 +1,9 @@
 package com.example.highgrade.controller;
 
+import com.example.highgrade.config.security.TokenProvider;
 import com.example.highgrade.dto.*;
 import com.example.highgrade.entity.Member;
+import com.example.highgrade.service.JoinService;
 import com.example.highgrade.service.MemberService;
 import com.example.highgrade.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,24 +17,22 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final JoinService joinService;
     private final TokenService tokenService;
-
-    @PostMapping(value = "/member")
-    public ResponseEntity<Member> saveMember(@RequestBody RegisterMemberDto dto){
-        Member savedMember = memberService.saveMember(dto);
-        return ResponseEntity.ok(savedMember);
-    }
+    private final TokenProvider tokenProvider;
+    private final static String GRANT_TYPE = "Bearer ";
+    private final static String AUTH_HEADER = "Authorization";
 
     @PostMapping(value = "/login")
-    public ResponseEntity<TokenResponseDto> loginMember(@RequestBody SignInMemberDto dto){
+    public ResponseEntity<TokenResponseDto> loginMember(@RequestBody LogInMemberDto dto){
         return memberService.loginMember(dto);
     }
 
-    @PostMapping(value = "/signup")
-    public ResponseEntity<Member> signUpMember(@RequestBody SignUpMemberDto dto){
-        memberService.signUpMember(dto);
-        Member signUpMember = dto.toEntity();
-        return ResponseEntity.ok(signUpMember);
+    @PostMapping(value = "/register")
+    public ResponseEntity<Member> registerMember(@RequestBody RegisterMemberDto dto){
+        memberService.registerMember(dto);
+        Member registerMember = dto.toEntity();
+        return ResponseEntity.ok(registerMember);
     }
 
     @PostMapping(value = "/logout")
@@ -44,5 +44,27 @@ public class MemberController {
     public ResponseEntity<TokenResponseDto> refresh(
         @CookieValue(value = "refreshToken", required = false) String refreshToken){
         return tokenService.refresh(refreshToken);
+    }
+
+    @PostMapping("/join/studies/{id}")
+    public ResponseEntity<JoinResponseDto> join(final HttpServletRequest request, final Long groupId){
+        String authHeader = request.getHeader(AUTH_HEADER);
+        if (authHeader == null || !authHeader.startsWith(GRANT_TYPE)) {
+            return ResponseEntity.badRequest().build();
+        }
+        String token = authHeader.substring(7);
+        String email = tokenProvider.getAuthentication(token).getName();
+        return ResponseEntity.ok().body(joinService.join(email, groupId));
+    }
+
+    @PostMapping("/check")
+    public void check(final HttpServletRequest request){
+        String authHeader = request.getHeader(AUTH_HEADER);
+        System.out.println("authheader is " + authHeader);
+        String token = authHeader.substring(7);
+        String email = tokenProvider.getAuthentication(token).getName();
+        System.out.println("email is " + email);
+        System.out.println(tokenProvider.getAuthentication(token).toString());
+        tokenProvider.validateToken(token);
     }
 }

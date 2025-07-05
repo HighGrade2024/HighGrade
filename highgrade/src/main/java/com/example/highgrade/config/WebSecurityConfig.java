@@ -1,5 +1,7 @@
 package com.example.highgrade.config;
 
+import com.example.highgrade.config.security.JwtFilter;
+import com.example.highgrade.config.security.TokenProvider;
 import com.example.highgrade.entity.Role;
 import com.example.highgrade.config.security.JwtAccessDeniedHandler;
 import com.example.highgrade.config.security.JwtAuthenticationEntryPoint;
@@ -22,9 +24,10 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-    private final CorsFilter corsFilter;
+    private final JwtFilter jwtFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final TokenProvider tokenProvider;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -42,18 +45,20 @@ public class WebSecurityConfig {
 
         return
             http.csrf(AbstractHttpConfigurer::disable)
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers((headerConfig) ->
                     headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests((authorizeRequests) ->
                     authorizeRequests
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers(
-                            "/api/v1/member/**", "/api/v1/auth/logout"
-                        ).hasRole(Role.MEMBER.name)
+                            "/api/v1/member/**", "/api/v1/auth/logout",
+                            "/api/v1/join/studies/**", "/api/v1/studies/**", "/api/v1/studies",
+                            "/api/v1/auth/check"
+                        ).hasRole(Role.MEMBER.name())
                         .requestMatchers(
                             "/api/v1/admin/**", "/api/v1/auth/logout"
-                        ).hasRole(Role.ADMIN.name)
+                        ).hasRole(Role.ADMIN.name())
                         .anyRequest().authenticated())
                 .exceptionHandling((exceptionConfig) ->
                     exceptionConfig.authenticationEntryPoint(jwtAuthenticationEntryPoint)

@@ -30,8 +30,6 @@ public class Member {
     private Role role;
     @NotNull
     private String password;
-    @OneToOne(mappedBy = "members")
-    private Introduce introduce;
     private LocalDateTime registeredAt;
     private LocalDateTime unregisteredAt;
     @CreatedDate

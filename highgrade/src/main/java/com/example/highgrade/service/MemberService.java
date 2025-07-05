@@ -1,8 +1,7 @@
 package com.example.highgrade.service;
 
 import com.example.highgrade.dto.RegisterMemberDto;
-import com.example.highgrade.dto.SignInMemberDto;
-import com.example.highgrade.dto.SignUpMemberDto;
+import com.example.highgrade.dto.LogInMemberDto;
 import com.example.highgrade.dto.TokenResponseDto;
 import com.example.highgrade.entity.Member;
 import com.example.highgrade.repository.MemberRepository;
@@ -24,11 +23,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
-    @Transactional
-    public Member saveMember(RegisterMemberDto dto){
-        Member member = dto.toEntity();
-        return memberRepository.save(member);
-    }
 
     @Transactional
     public Member findMember(Long id){
@@ -38,7 +32,7 @@ public class MemberService {
     }
 
     @Transactional
-    public ResponseEntity<TokenResponseDto> loginMember(SignInMemberDto dto){
+    public ResponseEntity<TokenResponseDto> loginMember(LogInMemberDto dto){
         Member foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
             NoSuchElementException::new
         );
@@ -50,7 +44,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void signUpMember(SignUpMemberDto dto){
+    public void registerMember(RegisterMemberDto dto){
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
         try{
             Member foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(

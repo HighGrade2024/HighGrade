@@ -1,8 +1,11 @@
 package com.example.highgrade.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
-    ADMIN("admin"),
-    MEMBER("member");
+    ADMIN("ADMIN"),
+    MEMBER("MEMBER");
 
     public final String name;
 
@@ -11,6 +14,6 @@ public enum Role {
     }
 
     public boolean isAdmin() {
-        return this.name.equals("admin");
+        return this.name.equals("ADMIN");
     }
 }

@@ -1,5 +1,6 @@
 package com.example.highgrade.config.security;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -37,7 +38,6 @@ public class JwtFilter extends GenericFilterBean {
         } else {
             LOGGER.info("유효하지 않은 JWT 토큰입니다: {}", jwt);
         }
-
         filterChain.doFilter(request, response);
     }
 

@@ -1,5 +1,7 @@
 package com.example.highgrade.config.security;
 
+import com.example.highgrade.entity.Member;
+import com.example.highgrade.entity.MemberDetail;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,10 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -55,7 +54,6 @@ public class TokenProvider implements InitializingBean {
 
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.accessTokenValiditySeconds*1000);
-
         return Jwts.builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
@@ -94,7 +92,7 @@ public class TokenProvider implements InitializingBean {
             Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                 .filter(StringUtils::hasText)
                 .map(SimpleGrantedAuthority::new).toList();
-        User principal = new User(claims.getSubject(), "", authorities);
+        User principal = new User(claims.getSubject(),"", authorities);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
