@@ -6,7 +6,6 @@ spring :
     driver-class-name: org.postgresql.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -19,7 +18,6 @@ spring :
     redis:
       port: 6379
       host: localhost
-
 logging:
   level:
     org:
@@ -43,3 +41,7 @@ cloud:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+server:
+  error:
+    whitelabel:
+      enabled: false

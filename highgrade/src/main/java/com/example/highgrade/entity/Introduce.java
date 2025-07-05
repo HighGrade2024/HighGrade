@@ -14,8 +14,6 @@ public class Introduce {
     private String profileImageUrl;
 
     private String job;
-    @OneToMany
-    private List<Skill> skills;
 
     private String content;
 

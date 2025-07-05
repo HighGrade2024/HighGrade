@@ -37,7 +37,7 @@ public class TokenService {
     @Transactional
     public ResponseEntity<TokenResponseDto> login(final Member foundMember) {
         String email = foundMember.getEmail();
-        String role = foundMember.getRole().name();
+        String role = "ROLE_"+foundMember.getRole().name();
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
             email, null,
             List.of(new SimpleGrantedAuthority(role))
