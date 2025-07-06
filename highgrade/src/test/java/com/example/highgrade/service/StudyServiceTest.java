@@ -16,16 +16,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class StudyServiceTest {
 
     @InjectMocks
@@ -67,33 +71,17 @@ class StudyServiceTest {
     @Test
     @DisplayName("스터디 조회 테스트")
     void getStudy() {
-        // given
-        Study study = Study.builder().id(1L).build();
-        when(studyRepository.findById(1L)).thenReturn(Optional.of(study));
-
-        // when
-
+        Member member = Member.builder().id(1L).build();
+        Study study = Study.builder().id(1L).createdBy(member).build();
+        given(studyRepository.findById(1L)).willReturn(Optional.of(study));
+        studyService.getStudy(1L);
+        then(studyRepository).should().findById(1L);
     }
 
     @Test
     @DisplayName("스터디 수정 테스트")
     void updateStudy() {
-        // given
-        StudyRequestDto requestDto = new StudyRequestDto("스터디 수정", LocalDateTime.now(), "부산");
-        Study study = Study.builder().id(1L).build();
-        Study updatedStudy = Study.builder()
-                .id(1L)
-                .studyName(requestDto.getStudyName())
-                .studyDate(requestDto.getStudyDate())
-                .location(requestDto.getLocation())
-                .build();
 
-        when(studyRepository.findById(1L)).thenReturn(Optional.of(study));
-        when(studyRepository.save(any(Study.class))).thenReturn(updatedStudy);
-
-        // when
-
-        // then
     }
 
     @Test

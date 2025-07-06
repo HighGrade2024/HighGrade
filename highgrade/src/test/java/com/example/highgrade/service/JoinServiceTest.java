@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -109,7 +110,7 @@ class JoinServiceTest {
         // then
         assertThat(result.getMemberId()).isEqualTo(10L);
         assertThat(result.getGroupId()).isEqualTo(1L);
-
+        assertEquals(result.getMemberId(), 10L, "땡!");
         then(studyMemberRepository).should().save(any(StudyMember.class));
     }
 }
