@@ -47,16 +47,7 @@ public class MemberController {
         return tokenService.refresh(refreshToken);
     }
 
-    @PostMapping("/join/studies/{id}")
-    public ResponseEntity<JoinResponseDto> join(final HttpServletRequest request, final Long groupId){
-        String authHeader = request.getHeader(AUTH_HEADER);
-        if (authHeader == null || !authHeader.startsWith(GRANT_TYPE)) {
-            return ResponseEntity.badRequest().build();
-        }
-        String token = authHeader.substring(7);
-        String email = tokenProvider.getAuthentication(token).getName();
-        return ResponseEntity.ok().body(joinService.join(email, groupId));
-    }
+
 
     @PostMapping("/check")
     public void check(final HttpServletRequest request){

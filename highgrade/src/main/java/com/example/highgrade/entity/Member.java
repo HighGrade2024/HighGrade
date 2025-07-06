@@ -36,11 +36,14 @@ public class Member {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Member(String name,
+    public Member(
+        Long id,
+        String name,
                   String email,
                   String phoneNumber,
                   String password,
                   Role role) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;

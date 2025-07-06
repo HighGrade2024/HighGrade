@@ -23,7 +23,6 @@ public class JoinService {
     private final StudyRepository studyRepository;
     private final static String STUDY = "study";
 
-
     @Transactional
     public JoinResponseDto join(final String email, final Long groupId) {
         Member foundMember = memberRepository.findByEmail(email).orElseThrow(IllegalArgumentException::new);
