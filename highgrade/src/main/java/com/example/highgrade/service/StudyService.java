@@ -3,8 +3,11 @@ package com.example.highgrade.service;
 import com.example.highgrade.config.security.TokenProvider;
 import com.example.highgrade.dto.StudyRequestDto;
 import com.example.highgrade.entity.Member;
+import com.example.highgrade.entity.Role;
 import com.example.highgrade.entity.Study;
+import com.example.highgrade.entity.StudyMember;
 import com.example.highgrade.repository.MemberRepository;
+import com.example.highgrade.repository.StudyMemberRepository;
 import com.example.highgrade.repository.StudyRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ public class StudyService {
     private final TokenProvider tokenProvider;
     private final StudyRepository studyRepository;
     private final MemberRepository memberRepository;
+    private final StudyMemberRepository studyMemberRepository;
 
     @Transactional
     public ResponseEntity<Study> createStudy(StudyRequestDto dto) {
@@ -37,7 +41,13 @@ public class StudyService {
             .studyDate(dto.getStudyDate())
             .location(dto.getLocation())
             .build();
+        StudyMember newStudyMember = StudyMember.builder()
+            .study(newStudy)
+            .member(member)
+            .role(Role.MASTER)
+            .build();
         Study savedStudy= studyRepository.save(newStudy);
+        StudyMember savedStudyMember = studyMemberRepository.save(newStudyMember);
         return ResponseEntity.ok().body(savedStudy);
     }
 

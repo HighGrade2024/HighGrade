@@ -31,7 +31,6 @@ public class JoinService {
         StudyMember newStudyMember = StudyMember.builder()
             .study(foundStudy)
             .member(foundMember)
-            .joinedAt(LocalDateTime.now())
             .build();
         studyMemberRepository.save(newStudyMember);
         return JoinResponseDto.builder()

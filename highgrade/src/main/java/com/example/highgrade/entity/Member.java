@@ -30,8 +30,6 @@ public class Member {
     private Role role;
     @NotNull
     private String password;
-    private LocalDateTime registeredAt;
-    private LocalDateTime unregisteredAt;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
