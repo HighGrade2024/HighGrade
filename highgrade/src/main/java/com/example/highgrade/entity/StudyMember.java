@@ -30,7 +30,7 @@ public class StudyMember {
     @Builder
     public StudyMember(Member member, Role role, Study study){
         this.member = member;
-        this.role = role;
+        this.role = Role.PARTICIPANT;
         this.study = study;
     }
 }

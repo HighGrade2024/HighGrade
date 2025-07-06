@@ -1,9 +1,10 @@
 package com.example.highgrade.service;
 
-import com.example.highgrade.dto.RegisterMemberDto;
-import com.example.highgrade.dto.LogInMemberDto;
-import com.example.highgrade.dto.TokenResponseDto;
+import com.example.highgrade.dto.auth.RegisterMemberRequestDto;
+import com.example.highgrade.dto.auth.LogInMemberRequestDto;
+import com.example.highgrade.dto.token.TokenResponseDto;
 import com.example.highgrade.entity.Member;
+import com.example.highgrade.entity.Role;
 import com.example.highgrade.repository.MemberRepository;
 import com.example.highgrade.config.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class MemberService {
     }
 
     @Transactional
-    public ResponseEntity<TokenResponseDto> loginMember(LogInMemberDto dto){
+    public ResponseEntity<TokenResponseDto> loginMember(LogInMemberRequestDto dto){
         Member foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
             NoSuchElementException::new
         );
@@ -44,20 +45,18 @@ public class MemberService {
     }
 
     @Transactional
-    public void registerMember(RegisterMemberDto dto){
+    public Member registerMember(RegisterMemberRequestDto dto){
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
-        try{
-            Member foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
-                NoSuchElementException::new
-            );
-        } catch (NoSuchElementException e){
-            Member newMemeber = Member.builder()
-                .name(dto.getName())
-                .email(dto.getEmail())
-                .password(encodedPassword)
-                .phoneNumber(dto.getPhoneNumber())
-                .build();
-            memberRepository.save(newMemeber);
-        }
+        Member foundMember = memberRepository.findByEmail(dto.getEmail()).orElseThrow(
+            NoSuchElementException::new
+        );
+        Member newMemeber = Member.builder()
+            .name(dto.getName())
+            .email(dto.getEmail())
+            .password(encodedPassword)
+            .role(Role.MEMBER)
+            .phoneNumber(dto.getPhoneNumber())
+            .build();
+        return memberRepository.save(newMemeber);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.highgrade.service;
 
 import com.example.highgrade.config.security.TokenProvider;
-import com.example.highgrade.dto.TokenResponseDto;
+import com.example.highgrade.dto.token.TokenResponseDto;
 import com.example.highgrade.entity.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

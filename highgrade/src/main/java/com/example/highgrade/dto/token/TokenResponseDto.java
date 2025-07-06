@@ -1,4 +1,4 @@
-package com.example.highgrade.dto;
+package com.example.highgrade.dto.token;
 
 import lombok.Builder;
 import lombok.Getter;
