@@ -6,8 +6,8 @@ import lombok.Getter;
 public enum Role {
     ADMIN("ADMIN"),
     MEMBER("MEMBER"),
-    MASTER("MASTER"),
-    SLAVE("SLAVE");
+    OWNER("OWNER"),
+    PARTICIPANT("PARTICIPANT");
 
     public final String name;
 

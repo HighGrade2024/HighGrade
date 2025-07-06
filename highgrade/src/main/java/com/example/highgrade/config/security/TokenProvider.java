@@ -93,8 +93,8 @@ public class TokenProvider implements InitializingBean {
                 .filter(StringUtils::hasText)
                 .map(SimpleGrantedAuthority::new).toList();
         User principal = new User(claims.getSubject(),"", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        MemberDetail memberDetail = new MemberDetail(claims.getSubject(), authorities);
+        return new UsernamePasswordAuthenticationToken(memberDetail, token, authorities);
     }
 
     // 토큰의 유효성 검증, 토큰을 파싱하여 exception들을 캐치

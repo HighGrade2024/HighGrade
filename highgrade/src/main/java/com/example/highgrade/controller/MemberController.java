@@ -2,6 +2,9 @@ package com.example.highgrade.controller;
 
 import com.example.highgrade.config.security.TokenProvider;
 import com.example.highgrade.dto.*;
+import com.example.highgrade.dto.auth.LogInMemberRequestDto;
+import com.example.highgrade.dto.auth.RegisterMemberRequestDto;
+import com.example.highgrade.dto.token.TokenResponseDto;
 import com.example.highgrade.entity.Member;
 import com.example.highgrade.service.JoinService;
 import com.example.highgrade.service.MemberService;
@@ -24,15 +27,13 @@ public class MemberController {
     private final static String AUTH_HEADER = "Authorization";
 
     @PostMapping(value = "/login")
-    public ResponseEntity<TokenResponseDto> loginMember(@RequestBody LogInMemberDto dto){
+    public ResponseEntity<TokenResponseDto> loginMember(@RequestBody LogInMemberRequestDto dto){
         return memberService.loginMember(dto);
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<Member> registerMember(@RequestBody RegisterMemberDto dto){
-        memberService.registerMember(dto);
-        Member registerMember = dto.toEntity();
-        return ResponseEntity.ok(registerMember);
+    public ResponseEntity<Member> registerMember(@RequestBody RegisterMemberRequestDto dto){
+        return ResponseEntity.ok().body(memberService.registerMember(dto));
     }
 
     @PostMapping(value = "/logout")

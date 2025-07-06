@@ -1,4 +1,4 @@
-package com.example.highgrade.dto;
+package com.example.highgrade.dto.auth;
 
 import com.example.highgrade.entity.Member;
 import lombok.Builder;
@@ -7,17 +7,17 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class RegisterMemberDto {
+public class RegisterMemberRequestDto {
     private String email;
     private String password;
     private String name;
     private String phoneNumber;
 
     @Builder
-    public RegisterMemberDto(String email,
-                             String name,
-                             String phoneNumber,
-                             String password) {
+    public RegisterMemberRequestDto(String email,
+                                    String name,
+                                    String phoneNumber,
+                                    String password) {
         this.email = email;
         this.name = name;
         this.password = password;

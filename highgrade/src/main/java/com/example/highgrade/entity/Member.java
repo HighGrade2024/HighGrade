@@ -1,8 +1,8 @@
 package com.example.highgrade.entity;
 
-import com.example.highgrade.dto.RegisterMemberDto;
+import com.example.highgrade.dto.auth.MemberResponseDto;
+import com.example.highgrade.dto.auth.RegisterMemberRequestDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,15 +20,15 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @Column(nullable = false)
     private String name;
     private String phoneNumber;
     private String oauthid;
-    @NotNull
+    @Column(nullable = false, unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @NotNull
+    @Column(nullable = false)
     private String password;
     @CreatedDate
     private LocalDateTime createdAt;
@@ -39,16 +39,17 @@ public class Member {
     public Member(String name,
                   String email,
                   String phoneNumber,
-                  String password) {
+                  String password,
+                  Role role) {
         this.name = name;
         this.email = email;
-        this.role = Role.MEMBER;
+        this.role = role;
         this.phoneNumber = phoneNumber;
         this.password = password;
     }
 
-    public RegisterMemberDto toDto() {
-        return RegisterMemberDto.builder()
+    public RegisterMemberRequestDto toDto() {
+        return RegisterMemberRequestDto.builder()
             .email(email)
             .password(password)
             .name(name)

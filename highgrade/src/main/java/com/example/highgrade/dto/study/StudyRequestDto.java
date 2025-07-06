@@ -1,4 +1,4 @@
-package com.example.highgrade.dto;
+package com.example.highgrade.dto.study;
 
 import com.example.highgrade.entity.Study;
 import lombok.Builder;
@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 
 @Getter
 public class StudyRequestDto {
-    private String studyName;
-    private LocalDateTime studyDate;
-    private String location;
+    private final String studyName;
+    private final LocalDateTime studyDate;
+    private final String location;
 
     @Builder
     public StudyRequestDto(String studyName,

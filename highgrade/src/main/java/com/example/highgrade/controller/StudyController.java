@@ -1,14 +1,15 @@
 package com.example.highgrade.controller;
 
-import com.example.highgrade.dto.StudyRequestDto;
-import com.example.highgrade.entity.Study;
+import com.example.highgrade.dto.study.StudyRequestDto;
+import com.example.highgrade.dto.study.StudyResponseDto;
+import com.example.highgrade.entity.MemberDetail;
 import com.example.highgrade.service.StudyService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.StringTokenizer;
+import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,19 +19,21 @@ public class StudyController {
     private final StudyService studiesService;
 
     @PostMapping("/studies")
-    public ResponseEntity<Study> createStudy(@RequestBody StudyRequestDto dto){
-        return studiesService.createStudy(dto);
+    public ResponseEntity<StudyResponseDto> createStudy(@RequestBody final StudyRequestDto dto,
+                                                        @AuthenticationPrincipal MemberDetail memberDetail){
+        return ResponseEntity.ok().body(studiesService.createStudy(dto, memberDetail.getEmail()));
     }
 
     @GetMapping("/studies/{id}")
-    public ResponseEntity<Study> getStudy(@PathVariable final Long id){
-        return studiesService.getStudy(id);
+    public ResponseEntity<StudyResponseDto> getStudy(@PathVariable final Long id){
+        return ResponseEntity.ok().body(studiesService.getStudy(id));
     }
 
     @PutMapping("/studies/{id}")
-    public ResponseEntity<Study> updateStudy(@PathVariable final Long id,
-                                             @RequestBody final StudyRequestDto dto){
-        return studiesService.updateStudy(id, dto);
+    public ResponseEntity<StudyResponseDto> updateStudy(@PathVariable final Long id,
+                                             @RequestBody final StudyRequestDto dto,
+                                             @AuthenticationPrincipal MemberDetail memberDetail) throws AccessDeniedException {
+        return ResponseEntity.ok().body(studiesService.updateStudy(id, dto, memberDetail.getEmail()));
     }
 
     @DeleteMapping("/studies/{id}")
