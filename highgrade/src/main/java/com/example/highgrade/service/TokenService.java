@@ -77,7 +77,7 @@ public class TokenService {
     @Transactional
     public ResponseEntity<TokenResponseDto> refresh(final String refreshToken) {
         Authentication authentication = tokenProvider.getAuthentication(refreshToken);
-        String accessToken = tokenProvider.createRefreshToken(authentication);
+        String accessToken = tokenProvider.createAccessToken(authentication);
         String email = authentication.getName();
         String oldRefreshToken = getRefreshToken(email);
         if (refreshToken == null) {

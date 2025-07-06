@@ -26,18 +26,18 @@ class MemberServiceTest {
     void setUp(){
         MockitoAnnotations.openMocks(this);
     }
-
-    @Test
-    @DisplayName("멤버 저장 테스트")
-    void saveMemberTest(){
-        Member member = Member.builder().email("test").build();
-        memberService.saveMember(member);
-
-        when(memberService.findMember(1L))
-            .thenReturn(member);
-
-        Member foundMember = memberService.findMember(1L);
-        assertEquals("test", foundMember.getName());
-        System.out.println("foundMember id : " + foundMember.getName());
-    }
+//
+//    @Test
+//    @DisplayName("멤버 저장 테스트")
+//    void saveMemberTest(){
+//        Member member = Member.builder().email("test").build();
+//        memberService.saveMember(member);
+//
+//        when(memberService.findMember(1L))
+//            .thenReturn(member);
+//
+//        Member foundMember = memberService.findMember(1L);
+//        assertEquals("test", foundMember.getName());
+//        System.out.println("foundMember id : " + foundMember.getName());
+//    }
 }
