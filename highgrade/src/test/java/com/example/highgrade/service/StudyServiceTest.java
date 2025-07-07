@@ -93,4 +93,15 @@ class StudyServiceTest {
         // then
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
     }
+
+    @Test
+    @DisplayName("스터디 조회 테스트2")
+    void getStudy2(){
+        Member createBy = Member.builder().id(1L).build();
+        Study savedStudy = Study.builder().id(1L).createdBy(createBy).build();
+        given(studyRepository.findById(any())).willReturn(Optional.ofNullable(savedStudy));
+        StudyResponseDto foundStudy = studyService.getStudy(any());
+//        assert savedStudy != null;
+        assertEquals(savedStudy.getId(), foundStudy.getStudyId());
+    }
 }
