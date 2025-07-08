@@ -28,7 +28,7 @@ public class StudyMember {
     private LocalDateTime joinedAt;
 
     @Builder
-    public StudyMember(Member member, Role role, Study study){
+    public StudyMember(Member member, Study study){
         this.member = member;
         this.role = Role.PARTICIPANT;
         this.study = study;

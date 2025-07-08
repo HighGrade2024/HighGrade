@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +64,18 @@ public class StudyService {
             .location(foundStudy.getLocation())
             .createdAt(foundStudy.getCreatedAt())
             .build();
+    }
+
+    @Transactional
+    public List<StudyResponseDto> getAllStudy() {
+        List<Study> studyList =  studyRepository.findAll();
+        List<StudyResponseDto> result = new ArrayList<>();
+        for(Study study : studyList){
+            result.add(StudyResponseDto.builder()
+                .createdById(study.getCreatedBy().getId())
+                .build());
+        }
+        return result;
     }
 
     @Transactional
