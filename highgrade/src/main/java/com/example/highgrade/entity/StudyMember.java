@@ -32,5 +32,6 @@ public class StudyMember {
         this.member = member;
         this.role = Role.PARTICIPANT;
         this.study = study;
+        this.joinedAt = LocalDateTime.now();
     }
 }

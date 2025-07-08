@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Getter
 public class StudyResponseDto {
     private final Long studyId;
-
     private final Long createdById;
     private final String studyName;
     private final LocalDateTime studyDate;

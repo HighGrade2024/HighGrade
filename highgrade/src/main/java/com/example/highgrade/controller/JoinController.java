@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.file.AccessDeniedException;
+
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 @RestController
@@ -20,7 +22,7 @@ public class JoinController {
 
     @PostMapping("/join/studies/{id}")
     public ResponseEntity<JoinResponseDto> join(@AuthenticationPrincipal MemberDetail memberDetail,
-                                                @PathVariable final Long id){
+                                                @PathVariable final Long id) throws AccessDeniedException {
         String email = memberDetail.getEmail();
         return ResponseEntity.ok().body(joinService.join(email, id));
     }

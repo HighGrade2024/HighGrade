@@ -1,9 +1,7 @@
 package com.example.highgrade.entity;
 
 import com.example.highgrade.dto.study.StudyResponseDto;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,7 +45,19 @@ public class Study {
         this.location = location;
     }
 
-    public StudyResponseDto toResponseDto(){
+    public StudyResponseDto toResponseDto(StudyMember studyMember){
+        return StudyResponseDto.builder()
+            .updatedAt(this.updatedAt)
+            .studyDate(this.studyDate)
+            .studyName(this.studyName)
+            .studyId(studyMember.getStudy().getId())
+            .createdAt(this.createdAt)
+            .location(this.location)
+            .createdById(studyMember.getMember().getId())
+            .build();
+    }
+
+    public StudyResponseDto toDto(){
         return StudyResponseDto.builder()
             .updatedAt(this.updatedAt)
             .studyDate(this.studyDate)
