@@ -3,6 +3,7 @@ package com.example.highgrade.controller;
 import com.example.highgrade.dto.study.StudyRequestDto;
 import com.example.highgrade.dto.study.StudyResponseDto;
 import com.example.highgrade.entity.MemberDetail;
+import com.example.highgrade.entity.Study;
 import com.example.highgrade.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +29,12 @@ public class StudyController {
     @GetMapping("/studies/{id}")
     public ResponseEntity<StudyResponseDto> getStudy(@PathVariable final Long id){
         return ResponseEntity.ok().body(studiesService.getStudy(id));
+    }
+
+    @GetMapping("/studies")
+    public ResponseEntity<List<StudyResponseDto>> getAllStudy(){
+        return ResponseEntity.ok().body(studiesService.getAllStudy()
+        );
     }
 
     @PutMapping("/studies/{id}")
