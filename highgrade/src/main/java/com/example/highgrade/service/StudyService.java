@@ -33,7 +33,6 @@ public class StudyService {
     @Transactional
     public StudyResponseDto createStudy(final StudyRequestDto dto, final String email) {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-
         Study newStudy = Study.builder()
             .studyName(dto.getStudyName())
             .studyDate(dto.getStudyDate())
@@ -41,15 +40,11 @@ public class StudyService {
             .location(dto.getLocation())
             .build();
         Study savedStudy = studyRepository.save(newStudy);
-        return StudyResponseDto.builder()
-            .studyId(savedStudy.getId())
-            .createdById(member.getId())
-            .studyName(savedStudy.getStudyName())
-            .studyDate(savedStudy.getStudyDate())
-            .location(savedStudy.getLocation())
-            .createdAt(savedStudy.getCreatedAt())
-            .updatedAt(savedStudy.getUpdatedAt())
+        StudyMember newStudyMember = StudyMember.builder()
+            .member(member)
+            .study(newStudy)
             .build();
+        return savedStudy.toResponseDto(newStudyMember);
     }
 
     @Transactional
@@ -85,7 +80,7 @@ public class StudyService {
             throw new AccessDeniedException("스터디 수정 권한이 없습니다.");
         }
         Study modifiedStudy = dto.toEntity(id);
-        StudyResponseDto studyResponseDto = modifiedStudy.toResponseDto();
+        StudyResponseDto studyResponseDto = modifiedStudy.toDto();
         studyRepository.save(modifiedStudy);
         return studyResponseDto;
     }
