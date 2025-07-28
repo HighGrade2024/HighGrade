@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -44,13 +45,15 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         return
-            http.csrf(AbstractHttpConfigurer::disable)
+            http.cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers((headerConfig) ->
                     headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests((authorizeRequests) ->
                     authorizeRequests
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**",
+                            "/api/v1/studies").permitAll()
                         .requestMatchers(
                             "/api/v1/member/**", "/api/v1/auth/logout",
                             "/api/v1/join/studies/**", "/api/v1/studies/**", "/api/v1/studies",
