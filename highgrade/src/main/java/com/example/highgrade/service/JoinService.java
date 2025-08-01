@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,5 +43,33 @@ public class JoinService {
             .groupId(foundStudy.getId())
             .memberId(foundMember.getId())
             .build();
+    }
+
+    @Transactional
+    public void unjoin(final String email, final Long groupId) throws AccessDeniedException {
+        Member foundMember = memberRepository.findByEmail(email).orElseThrow(IllegalArgumentException::new);
+        Study foundStudy = studyRepository.findById(groupId).orElseThrow(IllegalArgumentException::new);
+        if(!studyMemberRepository.existsByMemberAndStudy(foundMember, foundStudy)){
+            throw new AccessDeniedException("참여중인 스터디가 아닙니다.");
+        }
+        StudyMember foundStudyMember = studyMemberRepository.findByMemberAndStudy(foundMember, foundStudy).orElseThrow(
+            IllegalArgumentException::new
+        );
+        studyMemberRepository.delete(foundStudyMember);
+    }
+
+    @Transactional
+    public List<JoinResponseDto> getJoinList(final String email) {
+        Member foundMember = memberRepository.findByEmail(email).orElseThrow(IllegalArgumentException::new);
+        List<StudyMember> foundStudyMemberList = studyMemberRepository.findByMemberId(foundMember.getId()).orElseThrow(
+            IllegalArgumentException::new
+        );
+        List<JoinResponseDto> result = new ArrayList<>();
+        for(StudyMember studyMember:foundStudyMemberList){
+            result.add(JoinResponseDto.builder()
+                .groupId(studyMember.getStudy().getId())
+                .build());
+        }
+        return result;
     }
 }
