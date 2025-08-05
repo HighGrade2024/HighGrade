@@ -50,11 +50,20 @@ public class StudyService {
     @Transactional
     public StudyResponseDto getStudy(final Long id) {
         Study foundStudy = studyRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        List<StudyMember> studyMembers = studyMemberRepository.findByStudyId(id).orElseThrow(
+            IllegalArgumentException::new
+        );
+        List<String> memberNames = new ArrayList<>();
+        for(StudyMember member:studyMembers){
+            Member foundMember = memberRepository.findById(member.getId()).orElseThrow(IllegalArgumentException::new);
+            memberNames.add(foundMember.getName());
+        }
         return StudyResponseDto.builder()
-            .studyId(foundStudy.getId())
-            .studyName(foundStudy.getStudyName())
+            .id(foundStudy.getId())
+            .name(foundStudy.getStudyName())
             .createdById(foundStudy.getCreatedBy().getId())
-            .studyDate(foundStudy.getStudyDate())
+            .date(foundStudy.getStudyDate())
+            .participants(memberNames)
             .updatedAt(foundStudy.getUpdatedAt())
             .location(foundStudy.getLocation())
             .createdAt(foundStudy.getCreatedAt())
@@ -66,8 +75,17 @@ public class StudyService {
         List<Study> studyList =  studyRepository.findAll();
         List<StudyResponseDto> result = new ArrayList<>();
         for(Study study : studyList){
-            result.add(StudyResponseDto.builder()
-                .createdById(study.getCreatedBy().getId())
+            int memberCount = studyMemberRepository.countByStudyId(study.getId());
+            result.add(
+                StudyResponseDto.builder()
+                    .createdById(study.getCreatedBy().getId())
+                    .createdAt(study.getCreatedAt())
+                    .id(study.getId())
+                    .memberCount(memberCount)
+                    .name(study.getStudyName())
+                    .date(study.getStudyDate())
+                    .location(study.getLocation())
+                    .updatedAt(study.getUpdatedAt())
                 .build());
         }
         return result;
@@ -89,5 +107,19 @@ public class StudyService {
     public ResponseEntity<Void> deleteStudy(final Long id) {
         studyRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @Transactional
+    public List<String> getStudyMemberNames(final Long id) {
+        List<StudyMember> studyMemberList = studyMemberRepository.findByStudyId(id).orElseThrow(
+            IllegalArgumentException::new
+        );
+        List<String> nameList = new ArrayList<>();
+        for(StudyMember studyMember: studyMemberList){
+            nameList.add(memberRepository.findById(studyMember.getMember().getId()).orElseThrow(
+                IllegalArgumentException::new
+            ).getName());
+        }
+        return nameList;
     }
 }
