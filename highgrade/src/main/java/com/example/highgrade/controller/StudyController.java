@@ -31,6 +31,11 @@ public class StudyController {
         return ResponseEntity.ok().body(studiesService.getStudy(id));
     }
 
+    @GetMapping("/studies/{id}/members")
+    public ResponseEntity<List<String>> getStudyMemberNames(@PathVariable final Long id){
+        return ResponseEntity.ok().body(studiesService.getStudyMemberNames(id));
+    }
+
     @GetMapping("/studies")
     public ResponseEntity<List<StudyResponseDto>> getAllStudy(){
         return ResponseEntity.ok().body(studiesService.getAllStudy()
